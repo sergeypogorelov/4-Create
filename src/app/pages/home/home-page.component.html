@@ -1,0 +1,22 @@
+<button type="button" mat-raised-button color="primary" (click)="openAddUserModal()">Add user</button>
+<mat-table [dataSource]="users$">
+    <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.id }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="active">
+        <mat-header-cell *matHeaderCellDef>Active</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+            <mat-checkbox [checked]="row.active"></mat-checkbox>
+        </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
