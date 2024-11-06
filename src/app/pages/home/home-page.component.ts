@@ -9,7 +9,11 @@ import { UserDataService } from "../../services/user-data/user-data.service";
 import { IUser } from "../../entities/user";
 import { AddUserModalComponent } from "src/app/modals/add-user/add-user-modal.component";
 import { BehaviorSubject, Subject, switchMap } from "rxjs";
+import { UserQuery } from "src/app/stores/user/user.query";
+import { UserService } from "src/app/stores/user/user.service";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 
+@UntilDestroy()
 @Component({
     selector: 'app-home-page',
     templateUrl: './home-page.component.html',
@@ -19,18 +23,17 @@ import { BehaviorSubject, Subject, switchMap } from "rxjs";
 })
 export class HomePageComponent implements OnInit {
     readonly #dialog = inject(MatDialog);
-    readonly #userDataService = inject(UserDataService);
+    readonly #userQuery = inject(UserQuery);
+    readonly #userService = inject(UserService);
 
-    readonly loadDataSubject = new BehaviorSubject(null);
     readonly displayedColumns: (keyof IUser)[] = ['id', 'name', 'active'];
-    readonly users$ = this.loadDataSubject.pipe(switchMap(() => this.#userDataService.loadAll()));
+    readonly users$ = this.#userQuery.users$;
 
     ngOnInit() {
-        this.loadDataSubject.next(null);
+        this.#userService.loadAll().pipe(untilDestroyed(this)).subscribe();
     }
 
     openAddUserModal() {
-        const ref = this.#dialog.open(AddUserModalComponent);
-        ref.afterClosed().subscribe(() => this.loadDataSubject.next(null));
+        this.#dialog.open(AddUserModalComponent);
     }
 }

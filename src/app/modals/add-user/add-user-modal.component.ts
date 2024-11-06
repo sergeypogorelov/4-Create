@@ -8,8 +8,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { IUser } from "src/app/entities/user";
 import { DialogRef } from "@angular/cdk/dialog";
-import { UserDataService } from "src/app/services/user-data/user-data.service";
+import { UserService } from "src/app/stores/user/user.service";
+import { UserQuery } from "src/app/stores/user/user.query";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 
+@UntilDestroy()
 @Component({
     selector: 'app-add-user-modal',
     templateUrl: './add-user-modal.component.html',
@@ -28,7 +31,10 @@ import { UserDataService } from "src/app/services/user-data/user-data.service";
 export class AddUserModalComponent {
     readonly #fb = inject(FormBuilder);
     readonly #dialogRef = inject(DialogRef);
-    readonly #userDataService = inject(UserDataService);
+    readonly #userQuery = inject(UserQuery);
+    readonly #userService = inject(UserService);
+
+    readonly isLoading$ = this.#userQuery.selectLoading().pipe(untilDestroyed(this));
 
     readonly form = this.#fb.group({
         name: new FormControl('', { nonNullable: true }),
@@ -37,9 +43,8 @@ export class AddUserModalComponent {
 
     submit(ev: Event) {
         ev.preventDefault();
-        this.#userDataService.add(this.form.value as IUser).subscribe(() => {
-            this.#dialogRef.close();
-        });
-        
+        this.#userService.add(this.form.value as IUser)
+            .pipe(untilDestroyed(this))
+            .subscribe(() => this.#dialogRef.close());
     }
 }

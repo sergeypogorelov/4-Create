@@ -6,6 +6,6 @@
             <input matInput formControlName="name" />
         </mat-form-field>
         <mat-checkbox class="mb-20" formControlName="active">Is active</mat-checkbox>
-        <button type="submit" mat-raised-button color="primary">Save</button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="isLoading$ | async">Save</button>
     </form>
 </mat-dialog-content>
