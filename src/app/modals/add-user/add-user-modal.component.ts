@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { IUser } from "src/app/entities/user";
 import { DialogRef } from "@angular/cdk/dialog";
-import { UserService } from "src/app/services/user/user.service";
+import { UserDataService } from "src/app/services/user-data/user-data.service";
 
 @Component({
     selector: 'app-add-user-modal',
@@ -28,7 +28,7 @@ import { UserService } from "src/app/services/user/user.service";
 export class AddUserModalComponent {
     readonly #fb = inject(FormBuilder);
     readonly #dialogRef = inject(DialogRef);
-    readonly #userService = inject(UserService);
+    readonly #userDataService = inject(UserDataService);
 
     readonly form = this.#fb.group({
         name: new FormControl('', { nonNullable: true }),
@@ -37,7 +37,7 @@ export class AddUserModalComponent {
 
     submit(ev: Event) {
         ev.preventDefault();
-        this.#userService.add(this.form.value as IUser).subscribe(() => {
+        this.#userDataService.add(this.form.value as IUser).subscribe(() => {
             this.#dialogRef.close();
         });
         

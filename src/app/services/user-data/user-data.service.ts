@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
-import * as uniqid from 'uniqid';
+import { guid } from '@datorama/akita';
 import { delay, Observable, of } from "rxjs";
 
 import { IUser } from "../../entities/user";
-import { USERS } from "./user.mock";
+import { USERS } from "./user-data.mock";
 
 @Injectable({ providedIn: 'root' })
-export class UserService {
+export class UserDataService {
     readonly #delay = 500;
     readonly #users = [...USERS];
 
@@ -16,7 +16,7 @@ export class UserService {
 
     add(userData: Omit<IUser, 'id'>): Observable<IUser> {
         const user: IUser = {
-            id: uniqid(),
+            id: guid(),
             ...userData,
         };
 
