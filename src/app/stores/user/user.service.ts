@@ -22,6 +22,14 @@ export class UserService {
         return this.#userDataService.add(user).pipe(
             tap(user => this.#userStore.add(user)),
             finalize(() => this.#userStore.setLoading(false)),
-        )
+        );
+    }
+
+    toggleActive(id: string) {
+        this.#userStore.setLoading(true);
+        return this.#userDataService.toggleActive(id).pipe(
+            tap(user => this.#userStore.replace(id, user)),
+            finalize(() => this.#userStore.setLoading(false)),
+        );
     }
 }

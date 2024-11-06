@@ -4,8 +4,11 @@
         <mat-form-field>
             <mat-label>Name</mat-label>
             <input matInput formControlName="name" />
+            <mat-error *ngIf="nameCtrl.hasError('userNameUniqueness')">
+                {{ nameCtrl.getError('userNameUniqueness') }}
+            </mat-error>
         </mat-form-field>
         <mat-checkbox class="mb-20" formControlName="active">Is active</mat-checkbox>
-        <button type="submit" mat-raised-button color="primary" [disabled]="isLoading$ | async">Save</button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="isSubmitDisabled$ | async">Save</button>
     </form>
 </mat-dialog-content>
