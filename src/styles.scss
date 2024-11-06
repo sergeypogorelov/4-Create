@@ -1,24 +1,25 @@
-html, body {
-    height: 100%;
+html,
+body {
+  height: 100%;
 }
 
 body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .d-flex {
-    display: flex;
+  display: flex;
 }
 
 .dir-col {
-    flex-direction: column;
+  flex-direction: column;
 }
 
 .m-20 {
-    margin: 20px;
+  margin: 20px;
 }
 
 .mb-20 {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
